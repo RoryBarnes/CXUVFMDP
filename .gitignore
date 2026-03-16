@@ -1,0 +1,21 @@
+# Simulation output (large, reproducible)
+systems/*/output/
+systems/*/vconverge_tmp/
+
+# LaTeX build artifacts
+manuscript/*.aux
+manuscript/*.bbl
+manuscript/*.blg
+manuscript/*.log
+manuscript/*.out
+manuscript/*.fdb_latexmk
+manuscript/*.fls
+manuscript/*.synctex.gz
+manuscript/*.toc
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store

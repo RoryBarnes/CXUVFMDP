@@ -1,0 +1,6 @@
+# Planet b parameters
+sName		b
+saModules	atmesc
+dMass		-0.4
+dOrbPeriod	-2.2531
+saOutputOrder	Time -CumulativeXUVFlux

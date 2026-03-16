@@ -1,0 +1,411 @@
+{
+  "ProximaCen": {
+    "sStarName": "Proxima Centauri",
+    "dStellarMass": 0.122,
+    "dDistance": 1.3,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 11.1868,
+        "dMass": 1.07,
+        "dEscapeVelocity": 11.465401690144342,
+        "dShorelineFlux": 1.1047237104704097,
+        "dMeanNormalizedFlux": 15.907917938621624,
+        "dLower95NormalizedFlux": 10.848850048203905,
+        "dUpper95NormalizedFlux": 21.961446508523984,
+        "dMeanShorelineDistance": 14.399906318519921,
+        "dLowerShorelineDistance": 9.820419300663225,
+        "dUpperShorelineDistance": 19.879582831776496
+      }
+    ]
+  },
+  "TRAPPIST-1": {
+    "sStarName": "TRAPPIST-1",
+    "dStellarMass": 0.0898,
+    "dDistance": 12.43,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 1.51088,
+        "dMass": 1.374,
+        "dEscapeVelocity": 12.561148600584229,
+        "dShorelineFlux": 1.5969027034411296,
+        "dMeanNormalizedFlux": 176.45014132944834,
+        "dLower95NormalizedFlux": 127.866344289505,
+        "dUpper95NormalizedFlux": 235.58547532205012,
+        "dMeanShorelineDistance": 110.4952361525971,
+        "dLowerShorelineDistance": 80.07146835807134,
+        "dUpperShorelineDistance": 147.52650541225353
+      },
+      {
+        "sPlanetName": "c",
+        "dOrbPeriod": 2.42182,
+        "dMass": 1.308,
+        "dEscapeVelocity": 12.337467525411698,
+        "dShorelineFlux": 1.4851723172753923,
+        "dMeanNormalizedFlux": 94.06016970609188,
+        "dLower95NormalizedFlux": 68.16044240824634,
+        "dUpper95NormalizedFlux": 125.58348548293507,
+        "dMeanShorelineDistance": 63.33283256898365,
+        "dLowerShorelineDistance": 45.89396234727118,
+        "dUpperShorelineDistance": 84.55819168062798
+      },
+      {
+        "sPlanetName": "d",
+        "dOrbPeriod": 4.04961,
+        "dMass": 0.388,
+        "dEscapeVelocity": 7.917494599603672,
+        "dShorelineFlux": 0.24780325960895158,
+        "dMeanNormalizedFlux": 47.393475489549246,
+        "dLower95NormalizedFlux": 34.343749113051246,
+        "dUpper95NormalizedFlux": 63.27728756443795,
+        "dMeanShorelineDistance": 191.2544474368053,
+        "dLowerShorelineDistance": 138.59280611259007,
+        "dUpperShorelineDistance": 255.35292660917094
+      },
+      {
+        "sPlanetName": "e",
+        "dOrbPeriod": 6.09962,
+        "dMass": 0.692,
+        "dEscapeVelocity": 9.779190818067947,
+        "dShorelineFlux": 0.5812405774227969,
+        "dMeanNormalizedFlux": 27.44920481761371,
+        "dLower95NormalizedFlux": 19.89114903782262,
+        "dUpper95NormalizedFlux": 36.648746672885515,
+        "dMeanShorelineDistance": 47.22520395826914,
+        "dLowerShorelineDistance": 34.22188644505752,
+        "dUpperShorelineDistance": 63.0526293181129
+      },
+      {
+        "sPlanetName": "f",
+        "dOrbPeriod": 9.20669,
+        "dMass": 1.039,
+        "dEscapeVelocity": 11.343024518587008,
+        "dShorelineFlux": 1.0578884728777533,
+        "dMeanNormalizedFlux": 15.853526271761812,
+        "dLower95NormalizedFlux": 11.488340229290534,
+        "dUpper95NormalizedFlux": 21.167094946577123,
+        "dMeanShorelineDistance": 14.986009090954337,
+        "dLowerShorelineDistance": 10.859689394326253,
+        "dUpperShorelineDistance": 20.00881519107273
+      },
+      {
+        "sPlanetName": "g",
+        "dOrbPeriod": 12.35294,
+        "dMass": 1.321,
+        "dEscapeVelocity": 12.382083386092235,
+        "dShorelineFlux": 1.5069733441892335,
+        "dMeanNormalizedFlux": 10.712751401848072,
+        "dLower95NormalizedFlux": 7.762856517537686,
+        "dUpper95NormalizedFlux": 14.303038869591047,
+        "dMeanShorelineDistance": 7.1087862589975925,
+        "dLowerShorelineDistance": 5.151289866851745,
+        "dUpperShorelineDistance": 9.491235478545391
+      },
+      {
+        "sPlanetName": "h",
+        "dOrbPeriod": 18.7674,
+        "dMass": 0.326,
+        "dEscapeVelocity": 7.429996685132864,
+        "dShorelineFlux": 0.19173030623712245,
+        "dMeanNormalizedFlux": 6.133825181873378,
+        "dLower95NormalizedFlux": 4.444804199113835,
+        "dUpper95NormalizedFlux": 8.189607793693645,
+        "dMeanShorelineDistance": 31.991943799888215,
+        "dLowerShorelineDistance": 23.18258540523439,
+        "dUpperShorelineDistance": 42.714205982465536
+      }
+    ]
+  },
+  "LHS1140": {
+    "sStarName": "LHS 1140",
+    "dStellarMass": 0.179,
+    "dDistance": 14.99,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "c",
+        "dOrbPeriod": 3.77793,
+        "dMass": 1.81,
+        "dEscapeVelocity": 13.89046791993638,
+        "dShorelineFlux": 2.3968593018821625,
+        "dMeanNormalizedFlux": 119.25588320535338,
+        "dLower95NormalizedFlux": 68.11708809689922,
+        "dUpper95NormalizedFlux": 174.41637875306762,
+        "dMeanShorelineDistance": 49.7550620145731,
+        "dLowerShorelineDistance": 28.41931023794741,
+        "dUpperShorelineDistance": 72.7687180537068
+      }
+    ]
+  },
+  "GJ1214": {
+    "sStarName": "GJ 1214",
+    "dStellarMass": 0.178,
+    "dDistance": 14.65,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 1.5804,
+        "dMass": 8.17,
+        "dEscapeVelocity": 24.078268144654377,
+        "dShorelineFlux": 22.085247771589902,
+        "dMeanNormalizedFlux": 380.54930665716387,
+        "dLower95NormalizedFlux": 224.74281175742857,
+        "dUpper95NormalizedFlux": 534.8424338416918,
+        "dMeanShorelineDistance": 17.230927657814018,
+        "dLowerShorelineDistance": 10.176150799020421,
+        "dUpperShorelineDistance": 24.217180598250035
+      }
+    ]
+  },
+  "GJ486": {
+    "sStarName": "GJ 486",
+    "dStellarMass": 0.323,
+    "dDistance": 8.08,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 1.46714,
+        "dMass": 3.0,
+        "dEscapeVelocity": 16.703729712700085,
+        "dShorelineFlux": 5.046472938560347,
+        "dMeanNormalizedFlux": 704.4633242424396,
+        "dLower95NormalizedFlux": 224.18510350288534,
+        "dUpper95NormalizedFlux": 1156.2784752176399,
+        "dMeanShorelineDistance": 139.59518515587408,
+        "dLowerShorelineDistance": 44.42411684998367,
+        "dUpperShorelineDistance": 229.1260627561201
+      }
+    ]
+  },
+  "GJ367": {
+    "sStarName": "GJ 367",
+    "dStellarMass": 0.45,
+    "dDistance": 9.44,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 0.32197,
+        "dMass": 0.633,
+        "dEscapeVelocity": 9.46621905507937,
+        "dShorelineFlux": 0.5097163428271284,
+        "dMeanNormalizedFlux": 5043.656969550558,
+        "dLower95NormalizedFlux": 2962.7399295646132,
+        "dUpper95NormalizedFlux": 7474.653220327144,
+        "dMeanShorelineDistance": 9895.026990062837,
+        "dLowerShorelineDistance": 5812.526851958196,
+        "dUpperShorelineDistance": 14664.33895148265
+      },
+      {
+        "sPlanetName": "c",
+        "dOrbPeriod": 11.543,
+        "dMass": 4.13,
+        "dEscapeVelocity": 18.77093755036975,
+        "dShorelineFlux": 8.082580557837913,
+        "dMeanNormalizedFlux": 42.66134448864992,
+        "dLower95NormalizedFlux": 25.14869513379824,
+        "dUpper95NormalizedFlux": 63.09693354726328,
+        "dMeanShorelineDistance": 5.278183642386338,
+        "dLowerShorelineDistance": 3.1114685407509883,
+        "dUpperShorelineDistance": 7.806533210000159
+      }
+    ]
+  },
+  "GJ357": {
+    "sStarName": "GJ 357",
+    "dStellarMass": 0.342,
+    "dDistance": 9.44,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 3.9306,
+        "dMass": 1.84,
+        "dEscapeVelocity": 13.974063144795343,
+        "dShorelineFlux": 2.4556253800840318,
+        "dMeanNormalizedFlux": 191.6709362533063,
+        "dLower95NormalizedFlux": 34.394782799633965,
+        "dUpper95NormalizedFlux": 342.0390502340112,
+        "dMeanShorelineDistance": 78.05381790228415,
+        "dLowerShorelineDistance": 14.00652684183325,
+        "dUpperShorelineDistance": 139.2879602108961
+      }
+    ]
+  },
+  "YZCet": {
+    "sStarName": "YZ Ceti",
+    "dStellarMass": 0.13,
+    "dDistance": 3.72,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 2.0208,
+        "dMass": 0.7,
+        "dEscapeVelocity": 9.820305095532492,
+        "dShorelineFlux": 0.5911687660872414,
+        "dMeanNormalizedFlux": 169.89245871933878,
+        "dLower95NormalizedFlux": 106.74145606426012,
+        "dUpper95NormalizedFlux": 238.06306068609692,
+        "dMeanShorelineDistance": 287.38402375992064,
+        "dLowerShorelineDistance": 180.5600400216472,
+        "dUpperShorelineDistance": 402.69898266405517
+      },
+      {
+        "sPlanetName": "c",
+        "dOrbPeriod": 3.0601,
+        "dMass": 1.14,
+        "dEscapeVelocity": 11.733686125418954,
+        "dShorelineFlux": 1.2128457012540363,
+        "dMeanNormalizedFlux": 97.6822628539201,
+        "dLower95NormalizedFlux": 61.38112304593342,
+        "dUpper95NormalizedFlux": 136.90396403206978,
+        "dMeanShorelineDistance": 80.53972797439967,
+        "dLowerShorelineDistance": 50.609177228783246,
+        "dUpperShorelineDistance": 112.87830256603645
+      },
+      {
+        "sPlanetName": "d",
+        "dOrbPeriod": 4.6564,
+        "dMass": 1.09,
+        "dEscapeVelocity": 11.543164046912196,
+        "dShorelineFlux": 1.13528395409802,
+        "dMeanNormalizedFlux": 55.811951196073636,
+        "dLower95NormalizedFlux": 35.0714523356172,
+        "dUpper95NormalizedFlux": 78.26040313402733,
+        "dMeanShorelineDistance": 49.16122613607807,
+        "dLowerShorelineDistance": 30.892229392497118,
+        "dUpperShorelineDistance": 68.93465097567154
+      }
+    ]
+  },
+  "L98-59": {
+    "sStarName": "L 98-59",
+    "dStellarMass": 0.273,
+    "dDistance": 10.61,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 2.2531,
+        "dMass": 0.4,
+        "dEscapeVelocity": 8.006009347077985,
+        "dShorelineFlux": 0.2591783140890011,
+        "dMeanNormalizedFlux": 301.2540399564203,
+        "dLower95NormalizedFlux": 59.91683328068423,
+        "dUpper95NormalizedFlux": 579.4345772765088,
+        "dMeanShorelineDistance": 1162.342771675606,
+        "dLowerShorelineDistance": 231.17996384569798,
+        "dUpperShorelineDistance": 2235.65995215762
+      },
+      {
+        "sPlanetName": "c",
+        "dOrbPeriod": 3.6906,
+        "dMass": 2.22,
+        "dEscapeVelocity": 14.965217449104841,
+        "dShorelineFlux": 3.2381942903075105,
+        "dMeanNormalizedFlux": 156.00431467901853,
+        "dLower95NormalizedFlux": 30.96237846432578,
+        "dUpper95NormalizedFlux": 300.09283439671555,
+        "dMeanShorelineDistance": 48.17632936540192,
+        "dLowerShorelineDistance": 9.561618509736018,
+        "dUpperShorelineDistance": 92.67289343784793
+      },
+      {
+        "sPlanetName": "d",
+        "dOrbPeriod": 7.4507,
+        "dMass": 1.94,
+        "dEscapeVelocity": 14.246619569578922,
+        "dShorelineFlux": 2.654780054317734,
+        "dMeanNormalizedFlux": 61.14175603609292,
+        "dLower95NormalizedFlux": 12.134080421263901,
+        "dUpper95NormalizedFlux": 117.61559638357502,
+        "dMeanShorelineDistance": 23.03081791527399,
+        "dLowerShorelineDistance": 4.570653753982005,
+        "dUpperShorelineDistance": 44.3033298341552
+      }
+    ]
+  },
+  "LTT1445A": {
+    "sStarName": "LTT 1445A",
+    "dStellarMass": 0.257,
+    "dDistance": 6.86,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 5.3588,
+        "dMass": 2.87,
+        "dEscapeVelocity": 16.43580909792734,
+        "dShorelineFlux": 4.727581790394634,
+        "dMeanNormalizedFlux": 84.94828344143052,
+        "dLower95NormalizedFlux": 14.77460281858354,
+        "dUpper95NormalizedFlux": 157.73213107568228,
+        "dMeanShorelineDistance": 17.96865442159584,
+        "dLowerShorelineDistance": 3.125192428950073,
+        "dUpperShorelineDistance": 33.36423103163607
+      },
+      {
+        "sPlanetName": "c",
+        "dOrbPeriod": 3.1239,
+        "dMass": 1.54,
+        "dEscapeVelocity": 13.095113262399305,
+        "dShorelineFlux": 1.8891481806205876,
+        "dMeanNormalizedFlux": 174.4283281399762,
+        "dLower95NormalizedFlux": 30.276326099178625,
+        "dUpper95NormalizedFlux": 323.9473243887573,
+        "dMeanShorelineDistance": 92.33173444482067,
+        "dLowerShorelineDistance": 16.02644324556521,
+        "dUpperShorelineDistance": 171.47798553437994
+      }
+    ]
+  },
+  "GJ436": {
+    "sStarName": "GJ 436",
+    "dStellarMass": 0.445,
+    "dDistance": 9.76,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 2.6439,
+        "dMass": 21.36,
+        "dEscapeVelocity": 34.19547585431084,
+        "dShorelineFlux": 91.0131370358575,
+        "dMeanNormalizedFlux": 298.13479113439615,
+        "dLower95NormalizedFlux": 177.44996891772936,
+        "dUpper95NormalizedFlux": 464.5843475074703,
+        "dMeanShorelineDistance": 3.275733601149651,
+        "dLowerShorelineDistance": 1.9497181912081258,
+        "dUpperShorelineDistance": 5.1045855866327585
+      }
+    ]
+  },
+  "AUMic": {
+    "sStarName": "AU Mic",
+    "dStellarMass": 0.5,
+    "dDistance": 9.72,
+    "listPlanetResults": [
+      {
+        "sPlanetName": "b",
+        "dOrbPeriod": 8.463,
+        "dMass": 17.1,
+        "dEscapeVelocity": 31.52882429459734,
+        "dShorelineFlux": 65.57795986600233,
+        "dMeanNormalizedFlux": 13.743903567553906,
+        "dLower95NormalizedFlux": 6.123452815555747,
+        "dUpper95NormalizedFlux": 27.399307173267548,
+        "dMeanShorelineDistance": 0.20958113969445358,
+        "dLowerShorelineDistance": 0.09337668979132632,
+        "dUpperShorelineDistance": 0.41781274119008094
+      },
+      {
+        "sPlanetName": "c",
+        "dOrbPeriod": 18.859,
+        "dMass": 9.6,
+        "dEscapeVelocity": 25.538371252520136,
+        "dShorelineFlux": 28.01035790796916,
+        "dMeanNormalizedFlux": 4.6767495438940525,
+        "dLower95NormalizedFlux": 2.0855788613099553,
+        "dUpper95NormalizedFlux": 9.356177359217092,
+        "dMeanShorelineDistance": 0.16696500484784887,
+        "dLowerShorelineDistance": 0.07445741565182187,
+        "dUpperShorelineDistance": 0.33402562687552056
+      }
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+srcfolder .
+destfolder output
+trialname xuv_
+samplemode random
+randsize 500
+
+file b.in
+
+dMass [-1.374, 0.069, g, max0] b_mass
+dOrbPeriod [-1.51088, 1e-05, g, max0] b_orbper
+
+file c.in
+
+dMass [-1.308, 0.056, g, max0] c_mass
+dOrbPeriod [-2.42182, 1e-05, g, max0] c_orbper
+
+file d.in
+
+dMass [-0.388, 0.012, g, max0] d_mass
+dOrbPeriod [-4.04961, 3e-05, g, max0] d_orbper
+
+file e.in
+
+dMass [-0.692, 0.022, g, max0] e_mass
+dOrbPeriod [-6.09962, 3e-05, g, max0] e_orbper
+
+file f.in
+
+dMass [-1.039, 0.031, g, max0] f_mass
+dOrbPeriod [-9.20669, 5e-05, g, max0] f_orbper
+
+file g.in
+
+dMass [-1.321, 0.038, g, max0] g_mass
+dOrbPeriod [-12.35294, 0.00012, g, max0] g_orbper
+
+file h.in
+
+dMass [-0.326, 0.02, g, max0] h_mass
+dOrbPeriod [-18.7674, 0.0003, g, max0] h_orbper
+
+file star.in
+
+dAge [5e6, 1e6, g, min1000000] start
+dXUVEngleMidLateA [-0.1456, 0.0911, g] engle_a
+dXUVEngleMidLateB [-2.8876, 0.0439, g] engle_b
+dXUVEngleMidLateC [-1.8187, 0.2412, g] engle_c
+dXUVEngleMidLateD [0.3545, 0.0604, g] engle_d
+
+file vpl.in
+
+dStopTime [age_samples.txt, txt, p, 1] age

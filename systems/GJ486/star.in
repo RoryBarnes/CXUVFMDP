@@ -1,0 +1,13 @@
+# Host star parameters
+sName		star
+saModules	stellar
+
+dMass		0.323
+dRotPeriod	-1.0
+dAge		1.0e6
+
+sStellarModel	baraffe
+sXUVModel	Engle24MidLate
+bHaltEndBaraffeGrid	0
+
+saOutputOrder	Time -Luminosity -LXUVStellar -LXUVTot
