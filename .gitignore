@@ -1,6 +1,16 @@
 # Simulation output (large, reproducible)
-systems/*/output/
+systems/*/output/*
+!systems/*/output/Converged_Param_Dictionary.json
 systems/*/vconverge_tmp/
+
+# vconverge/multiplanet runtime artifacts
+systems/*/.output
+systems/*/vconverge.log
+systems/*/vconverge_results.txt
+
+# Manuscript figures and compiled tables (reproducible from code + data)
+manuscript/*.pdf
+manuscript/table_*.tex
 
 # LaTeX build artifacts
 manuscript/*.aux

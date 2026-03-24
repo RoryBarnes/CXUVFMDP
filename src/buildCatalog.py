@@ -121,6 +121,7 @@ def fdictCollectResults():
                     "sPlanetName": dictPlanet["sName"],
                     "dOrbPeriod": dictPlanet["dOrbPeriod"],
                     "dMass": dMassPlanet,
+                    "bMsini": dictPlanet.get("bMsini", False),
                     "dEscapeVelocity": dEscVel,
                     "dShorelineFlux": dShoreFlux,
                     "dMeanNormalizedFlux": dictFlux["dMean"],

@@ -142,11 +142,12 @@ def fnWriteFluxTable(dictAllResults, sOutputPath):
             else:
                 sAtmosphere = "Protected"
 
+            sMassSuffix = "$^\\ddagger$" if dictPlanet.get("bMsini", False) else ""
             sLine = (
                 f"{dictSystem['sStarName']} "
                 f"{dictPlanet['sPlanetName']} & "
                 f"{dictPlanet['dOrbPeriod']:.4f} & "
-                f"{dictPlanet['dMass']:.2f} & "
+                f"{dictPlanet['dMass']:.2f}{sMassSuffix} & "
                 f"{dictPlanet['dEscapeVelocity']:.1f} & "
                 f"{sFlux} & "
                 f"{dictPlanet['dShorelineFlux']:.1f} & "
@@ -164,7 +165,8 @@ def fnWriteFluxTable(dictAllResults, sOutputPath):
         "(Zahnle \\& Catling 2017). "
         "$\\Delta_{\\rm shore} = F_{\\rm XUV}/F_{\\rm shore}$; "
         "values $> 1$ indicate the planet lies on the "
-        "atmosphere-vulnerable side of the shoreline.}",
+        "atmosphere-vulnerable side of the shoreline. "
+        "$^\\ddagger$Mass is $M \\sin i$ (minimum mass).}",
         "\\end{deluxetable*}",
     ])
 

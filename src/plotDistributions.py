@@ -26,11 +26,11 @@ D_TICK_FONT = 10
 def fnPlotAgeDistributions(sOutputPath):
     """Plot age distribution histograms for all systems."""
     iNumSystems = len(LIST_SYSTEMS)
-    iCols = 3
+    iCols = 6
     iRows = (iNumSystems + iCols - 1) // iCols
 
     fig, daAxes = plt.subplots(
-        iRows, iCols, figsize=(12, 3 * iRows), squeeze=False,
+        iRows, iCols, figsize=(20, 2.5 * iRows), squeeze=False,
     )
 
     for iIndex, dictSystem in enumerate(LIST_SYSTEMS):
@@ -94,11 +94,11 @@ def fnPlotFluxDistributions(sOutputPath):
             })
 
     iNumPanels = len(listPanels)
-    iCols = 4
+    iCols = 6
     iRows = (iNumPanels + iCols - 1) // iCols
 
     fig, daAxes = plt.subplots(
-        iRows, iCols, figsize=(14, 3 * iRows), squeeze=False,
+        iRows, iCols, figsize=(20, 2.5 * iRows), squeeze=False,
     )
 
     for iIndex, dictPanel in enumerate(listPanels):

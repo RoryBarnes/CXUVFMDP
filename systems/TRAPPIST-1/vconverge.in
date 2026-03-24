@@ -6,5 +6,22 @@ fConvergenceCondition 0.004
 iNumberOfConvergences 3
 
 sObjectFile b.in
+saConverge final CumulativeXUVFlux
 
+sObjectFile c.in
+saConverge final CumulativeXUVFlux
+
+sObjectFile d.in
+saConverge final CumulativeXUVFlux
+
+sObjectFile e.in
+saConverge final CumulativeXUVFlux
+
+sObjectFile f.in
+saConverge final CumulativeXUVFlux
+
+sObjectFile g.in
+saConverge final CumulativeXUVFlux
+
+sObjectFile h.in
 saConverge final CumulativeXUVFlux

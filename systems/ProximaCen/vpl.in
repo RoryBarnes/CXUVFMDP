@@ -1,6 +1,6 @@
 # Primary input file for ProximaCen
 sSystemName	ProximaCen
-iVerbose	5
+iVerbose	0
 bOverwrite	1
 
 saBodyFiles	star.in	b.in

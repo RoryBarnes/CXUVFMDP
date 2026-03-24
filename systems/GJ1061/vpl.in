@@ -1,0 +1,22 @@
+# Primary input file for GJ1061
+sSystemName	GJ1061
+iVerbose	0
+bOverwrite	1
+
+saBodyFiles	star.in	b.in	c.in	d.in
+
+sUnitMass	solar
+sUnitLength	aU
+sUnitTime	YEAR
+sUnitAngle	d
+sUnitTemp	K
+
+bDoLog		1
+iDigits		6
+dMinValue	1e-10
+
+bDoForward	1
+bVarDt		1
+dEta		1.0e-2
+dStopTime	8.0e9
+dOutputTime	1.0e6

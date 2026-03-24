@@ -14,32 +14,12 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-try:
-    import vplot as vpl
-
-    LIST_COLORS = [
-        vpl.colors.red,
-        vpl.colors.orange,
-        vpl.colors.purple,
-        vpl.colors.dark_blue,
-        vpl.colors.pale_blue,
-        "seagreen",
-        "brown",
-        "olive",
-        "teal",
-        "crimson",
-        "indigo",
-        "darkorange",
-    ]
-except ImportError:
-    LIST_COLORS = plt.cm.tab20(np.linspace(0, 1, 12))
-
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 D_MARKER_SIZE = 7
 D_FONT_SIZE = 18
 D_TICK_FONT = 14
-D_ANNOTATION_FONT = 10
+D_ANNOTATION_FONT = 8
 
 DICT_SOLAR_SYSTEM = {
     "Mercury": {"dEscVel": 4.25, "dNormFlux": 6.67},
@@ -51,6 +31,15 @@ DICT_SOLAR_SYSTEM = {
     "Uranus": {"dEscVel": 21.3, "dNormFlux": 0.0027},
     "Neptune": {"dEscVel": 23.5, "dNormFlux": 0.0011},
 }
+
+
+def fdaGenerateColormap(iNumSystems):
+    """Return an array of distinct colors for the given number of systems."""
+    if iNumSystems <= 20:
+        daColormap = plt.cm.tab20(np.linspace(0, 1, 20))
+    else:
+        daColormap = plt.cm.gist_ncar(np.linspace(0.05, 0.95, iNumSystems))
+    return daColormap
 
 
 def fnPlotShorelineLine(ax):
@@ -110,12 +99,16 @@ def fnPlotSolarSystemLabels(ax):
         ax.annotate(sName, tPos, fontsize=D_ANNOTATION_FONT, color="0.4")
 
 
-def fnPlotErrorBar(ax, dX, dY, dLower, dUpper, sColor, sLabel=None):
+def fnPlotErrorBar(ax, dX, dY, dLower, dUpper, sColor, sLabel=None,
+                   bMsini=False):
     """Plot a data point with vertical error bar."""
     daYerr = np.array([[dY - dLower], [dUpper - dY]])
+    sMarkerStyle = "o" if not bMsini else "o"
+    sFillColor = sColor if not bMsini else "none"
     ax.plot(
-        dX, dY, "o", color=sColor,
+        dX, dY, sMarkerStyle, color=sColor, markerfacecolor=sFillColor,
         markersize=D_MARKER_SIZE, zorder=10, label=sLabel,
+        markeredgewidth=1.5,
     )
     ax.errorbar(
         [dX], [dY], yerr=daYerr, capsize=3, capthick=1.5,
@@ -125,18 +118,22 @@ def fnPlotErrorBar(ax, dX, dY, dLower, dUpper, sColor, sLabel=None):
 
 def fnCreateCosmicShorelineFigure(dictAllResults, sOutputPath):
     """Create the cosmic shoreline figure from results dictionary."""
-    fig, ax = plt.subplots(figsize=(8, 7))
+    fig, ax = plt.subplots(figsize=(10, 8))
 
     fnPlotShorelineLine(ax)
     fnPlotSolarSystem(ax)
     fnPlotSolarSystemLabels(ax)
 
+    iNumSystems = len(dictAllResults)
+    daColors = fdaGenerateColormap(iNumSystems)
+
     iColorIndex = 0
     for sSystemName, dictSystem in dictAllResults.items():
-        sColor = LIST_COLORS[iColorIndex % len(LIST_COLORS)]
+        sColor = daColors[iColorIndex % len(daColors)]
         bFirst = True
         for dictPlanet in dictSystem["listPlanetResults"]:
             sLabel = dictSystem["sStarName"] if bFirst else None
+            bMsini = dictPlanet.get("bMsini", False)
             fnPlotErrorBar(
                 ax,
                 dictPlanet["dEscapeVelocity"],
@@ -145,6 +142,7 @@ def fnCreateCosmicShorelineFigure(dictAllResults, sOutputPath):
                 dictPlanet["dUpper95NormalizedFlux"],
                 sColor,
                 sLabel,
+                bMsini,
             )
             bFirst = False
         iColorIndex += 1
@@ -156,7 +154,10 @@ def fnCreateCosmicShorelineFigure(dictAllResults, sOutputPath):
     ax.set_xlim(1, 100)
     ax.set_ylim(1e-4, 1e5)
     ax.tick_params(labelsize=D_TICK_FONT)
-    ax.legend(fontsize=D_ANNOTATION_FONT, loc="lower right", ncol=2)
+    ax.legend(
+        fontsize=D_ANNOTATION_FONT - 2, loc="lower right",
+        ncol=4, framealpha=0.7,
+    )
 
     fig.savefig(sOutputPath, bbox_inches="tight", dpi=300)
     plt.close(fig)

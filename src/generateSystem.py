@@ -4,14 +4,13 @@ the cumulative XUV flux distribution.
 
 Each system gets a directory under systems/ containing:
     - vpl.in      : primary VPLanet input file
-    - star.in     : host star parameters
+    - star.in     : host star parameters (stellar + flare modules)
     - <planet>.in : one per planet with P < 25 days
     - vspace.in   : parameter sweep definition
     - vconverge.in: convergence control file
     - age_samples.txt: age distribution from Engle & Guinan (2023)
 """
 
-import json
 import os
 import sys
 
@@ -27,60 +26,64 @@ from engleAge import (
 )
 
 
+def fsFormatVplContent(sSystemName, sBodyFiles):
+    """Return the content string for vpl.in."""
+    return (
+        f"# Primary input file for {sSystemName}\n"
+        f"sSystemName\t{sSystemName}\n"
+        "iVerbose\t0\nbOverwrite\t1\n\n"
+        f"saBodyFiles\t{sBodyFiles}\n\n"
+        "sUnitMass\tsolar\nsUnitLength\taU\n"
+        "sUnitTime\tYEAR\nsUnitAngle\td\nsUnitTemp\tK\n\n"
+        "bDoLog\t\t1\niDigits\t\t6\ndMinValue\t1e-10\n\n"
+        "bDoForward\t1\nbVarDt\t\t1\n"
+        "dEta\t\t1.0e-2\ndStopTime\t8.0e9\ndOutputTime\t1.0e6\n"
+    )
+
+
 def fnWriteVplIn(sOutputDirectory, sSystemName, listPlanetNames):
     """Write the primary vpl.in file."""
     sBodyFiles = "star.in\t" + "\t".join(
         [f"{sName}.in" for sName in listPlanetNames]
     )
-    sContent = f"""# Primary input file for {sSystemName}
-sSystemName\t{sSystemName}
-iVerbose\t0
-bOverwrite\t1
-
-saBodyFiles\t{sBodyFiles}
-
-sUnitMass\tsolar
-sUnitLength\taU
-sUnitTime\tYEAR
-sUnitAngle\td
-sUnitTemp\tK
-
-bDoLog\t\t1
-iDigits\t\t6
-dMinValue\t1e-10
-
-bDoForward\t1
-bVarDt\t\t1
-dEta\t\t1.0e-2
-dStopTime\t8.0e9
-dOutputTime\t1.0e6
-"""
+    sContent = fsFormatVplContent(sSystemName, sBodyFiles)
     sFilePath = os.path.join(sOutputDirectory, "vpl.in")
     with open(sFilePath, "w") as fileHandle:
         fileHandle.write(sContent)
 
 
+def fsFormatFlareBlock():
+    """Return the flare parameter block for star.in."""
+    return (
+        "sFlareFFD\t\tsingle\n"
+        "dFlareMinEnergy\t\t-1.0e29\n"
+        "dFlareMaxEnergy\t\t-1.0e34\n"
+        "dEnergyBin\t\t20\n"
+        "sFlareBandPass\t\tsxr\n"
+        "dFlareSingleStarA1\t-0.301\n"
+        "dFlareSingleStarA2\t-0.533\n"
+        "dFlareSingleStarB1\t8.732\n"
+        "dFlareSingleStarB2\t16.780"
+    )
+
+
+def fsFormatStarContent(dMass, sXUVModel, sFlareBlock):
+    """Return the content string for star.in."""
+    return (
+        "# Host star parameters\n"
+        "sName\t\tstar\nsaModules\tstellar\tflare\n\n"
+        f"dMass\t\t{dMass}\ndRotPeriod\t-1.0\ndAge\t\t1.0e6\n\n"
+        f"sStellarModel\tbaraffe\nsXUVModel\t{sXUVModel}\n"
+        "bHaltEndBaraffeGrid\t0\n\n"
+        f"{sFlareBlock}\n\n"
+        "saOutputOrder\tTime -Luminosity -LXUVStellar -LXUVFlare -LXUVTot\n"
+    )
+
+
 def fnWriteStarIn(sOutputDirectory, dMass, sXUVModel):
-    """Write the star.in file."""
-    dMassForModel = dMass
-    if sXUVModel == "Engle24MidLate" and dMass < 0.101:
-        dMassForModel = 0.101
-    elif sXUVModel == "Engle24Early" and dMass > 0.60:
-        dMassForModel = 0.60
-    sContent = f"""# Host star parameters
-sName\t\tstar
-saModules\tstellar
-
-dMass\t\t{dMassForModel}
-dRotPeriod\t-1.0
-dAge\t\t1.0e6
-
-sStellarModel\tbaraffe
-sXUVModel\t{sXUVModel}
-bHaltEndBaraffeGrid\t0
-
-saOutputOrder\tTime -Luminosity -LXUVStellar -LXUVTot
-"""
+    """Write the star.in file with stellar and flare parameters."""
+    dClampedMass, _ = ftClampMassForModel(dMass, sXUVModel)
+    sContent = fsFormatStarContent(dClampedMass, sXUVModel, fsFormatFlareBlock())
     sFilePath = os.path.join(sOutputDirectory, "star.in")
     with open(sFilePath, "w") as fileHandle:
         fileHandle.write(sContent)
@@ -108,22 +111,9 @@ saOutputOrder\tTime -CumulativeXUVFlux
         fileHandle.write(sContent)
 
 
-def fnWriteVspaceIn(
-    sOutputDirectory,
-    dStellarMass,
-    dStellarMassSigma,
-    listPlanetDicts,
-    sXUVModel,
-):
-    """Write the vspace.in file with Gaussian draws from posteriors.
-
-    Parameters
-    ----------
-    listPlanetDicts : list of dict
-        Each dict has keys: sName, dMass, dMassSigma, dOrbPeriod,
-        dOrbPeriodSigma.
-    """
-    listLines = [
+def flistFormatVspaceHeader():
+    """Return constant header lines for vspace.in."""
+    return [
         "srcfolder .",
         "destfolder output",
         "trialname xuv_",
@@ -132,70 +122,89 @@ def fnWriteVspaceIn(
         "",
     ]
 
-    for dictPlanet in listPlanetDicts:
-        listLines.append(f"file {dictPlanet['sName']}.in")
-        listLines.append("")
-        if dictPlanet["dMass"] is not None and dictPlanet["dMassSigma"] is not None:
-            listLines.append(
-                f"dMass [{-abs(dictPlanet['dMass'])}, "
-                f"{dictPlanet['dMassSigma']}, g, max0] "
-                f"{dictPlanet['sName']}_mass"
-            )
-        listLines.append(
-            f"dOrbPeriod [{-abs(dictPlanet['dOrbPeriod'])}, "
-            f"{dictPlanet['dOrbPeriodSigma']}, g, max0] "
-            f"{dictPlanet['sName']}_orbper"
-        )
-        listLines.append("")
 
-    listLines.append("file star.in")
+def flistFormatPlanetVspaceBlock(dictPlanet):
+    """Return vspace lines for a single planet's parameters."""
+    listLines = [f"file {dictPlanet['sName']}.in", ""]
+    if dictPlanet["dMass"] is not None and dictPlanet["dMassSigma"] is not None:
+        listLines.append(
+            f"dMass [{-abs(dictPlanet['dMass'])}, "
+            f"{dictPlanet['dMassSigma']}, g, max0] "
+            f"{dictPlanet['sName']}_mass"
+        )
+    listLines.append(
+        f"dOrbPeriod [{-abs(dictPlanet['dOrbPeriod'])}, "
+        f"{dictPlanet['dOrbPeriodSigma']}, g, max0] "
+        f"{dictPlanet['sName']}_orbper"
+    )
     listLines.append("")
-    if sXUVModel == "Engle24MidLate" and dStellarMass < 0.101:
-        pass
-    elif sXUVModel == "Engle24MidLate":
-        listLines.append(
-            f"dMass [{dStellarMass}, {dStellarMassSigma}, g, min0.101] mass"
-        )
-    elif sXUVModel == "Engle24Early":
-        listLines.append(
-            f"dMass [{dStellarMass}, {dStellarMassSigma}, g, min0.40, max0.60] mass"
-        )
-    else:
-        listLines.append(
-            f"dMass [{dStellarMass}, {dStellarMassSigma}, g] mass"
-        )
-    listLines.append("dAge [5e6, 1e6, g, min1000000] start")
+    return listLines
 
+
+def ftClampMassForModel(dStellarMass, sXUVModel):
+    """Clamp stellar mass to valid range for the XUV model and return bounds string."""
     if sXUVModel == "Engle24Early":
-        listLines.append(
-            "dXUVEngleEarlyA [-0.4896, 0.0773, g] engle_a"
-        )
-        listLines.append(
-            "dXUVEngleEarlyB [-3.2128, 0.0458, g] engle_b"
-        )
-        listLines.append(
-            "dXUVEngleEarlyC [-0.4469, 0.0835, g] engle_c"
-        )
-        listLines.append(
-            "dXUVEngleEarlyD [-0.2985, 0.1005, g] engle_d"
-        )
-    else:
-        listLines.append(
-            "dXUVEngleMidLateA [-0.1456, 0.0911, g] engle_a"
-        )
-        listLines.append(
-            "dXUVEngleMidLateB [-2.8876, 0.0439, g] engle_b"
-        )
-        listLines.append(
-            "dXUVEngleMidLateC [-1.8187, 0.2412, g] engle_c"
-        )
-        listLines.append(
-            "dXUVEngleMidLateD [0.3545, 0.0604, g] engle_d"
-        )
+        return min(max(dStellarMass, 0.40), 0.60), "min0.40, max0.60"
+    return max(dStellarMass, 0.10), "min0.10, max0.399"
 
+
+def flistFormatFlareVspaceBlock():
+    """Return empty list — flare FFD parameters use fixed best-fit values.
+
+    The FFD parameters (A1, A2, B1, B2) have large, correlated uncertainties
+    from the GJ 1132 MCMC fit. Sampling them independently from Gaussians
+    breaks the correlation structure, producing unphysical flare rates in
+    ~40% of trials and preventing KS convergence. The best-fit values are
+    kept in star.in (via fsFormatFlareBlock) so the FLARE module contributes
+    to LXUVTot, but without adding non-convergent variance.
+    """
+    return []
+
+
+def flistFormatEngleCoefficients(sXUVModel):
+    """Return vspace lines for Engle XUV model coefficients."""
+    if sXUVModel == "Engle24Early":
+        return [
+            "dXUVEngleEarlyA [-0.4896, 0.0773, g] engle_a",
+            "dXUVEngleEarlyB [-3.2128, 0.0458, g] engle_b",
+            "dXUVEngleEarlyC [-0.4469, 0.0835, g] engle_c",
+            "dXUVEngleEarlyD [-0.2985, 0.1005, g] engle_d",
+        ]
+    return [
+        "dXUVEngleMidLateA [-0.1456, 0.0911, g] engle_a",
+        "dXUVEngleMidLateB [-2.8876, 0.0439, g] engle_b",
+        "dXUVEngleMidLateC [-1.8187, 0.2412, g] engle_c",
+        "dXUVEngleMidLateD [0.3545, 0.0604, g] engle_d",
+    ]
+
+
+def flistFormatStellarVspaceBlock(dStellarMass, dStellarMassSigma, sXUVModel):
+    """Return vspace lines for stellar mass, age, Engle coefficients, and flare FFD."""
+    listLines = ["file star.in", ""]
+    dClampedMass, sMassBounds = ftClampMassForModel(dStellarMass, sXUVModel)
+    listLines.append(f"dMass [{dClampedMass}, {dStellarMassSigma}, g, {sMassBounds}] mass")
+    listLines.append("dAge [5e6, 1e6, g, min1000000] start")
+    listLines.extend(flistFormatEngleCoefficients(sXUVModel))
+    listLines.extend(flistFormatFlareVspaceBlock())
     listLines.append("")
-    listLines.append("file vpl.in")
-    listLines.append("")
+    return listLines
+
+
+def fnWriteVspaceIn(
+    sOutputDirectory,
+    dStellarMass,
+    dStellarMassSigma,
+    listPlanetDicts,
+    sXUVModel,
+):
+    """Write the vspace.in file with Gaussian draws from posteriors."""
+    listLines = flistFormatVspaceHeader()
+    for dictPlanet in listPlanetDicts:
+        listLines.extend(flistFormatPlanetVspaceBlock(dictPlanet))
+    listLines.extend(
+        flistFormatStellarVspaceBlock(dStellarMass, dStellarMassSigma, sXUVModel)
+    )
+    listLines.extend(["file vpl.in", ""])
     listLines.append("dStopTime [age_samples.txt, txt, p, 1] age")
     listLines.append("")
 
@@ -205,96 +214,93 @@ def fnWriteVspaceIn(
 
 
 def fnWriteVconvergeIn(sOutputDirectory, listPlanetNames):
-    """Write the vconverge.in file."""
-    sContent = f"""sVspaceFile vspace.in
-iStepSize 100
-iMaxSteps 200
-sConvergenceMethod KS_statistic
-fConvergenceCondition 0.004
-iNumberOfConvergences 3
+    """Write the vconverge.in file monitoring all planets."""
+    listLines = [
+        "sVspaceFile vspace.in",
+        "iStepSize 100",
+        "iMaxSteps 200",
+        "sConvergenceMethod KS_statistic",
+        "fConvergenceCondition 0.004",
+        "iNumberOfConvergences 3",
+        "",
+    ]
+    for sPlanetName in listPlanetNames:
+        listLines.append(f"sObjectFile {sPlanetName}.in")
+        listLines.append("saConverge final CumulativeXUVFlux")
+        listLines.append("")
 
-sObjectFile {listPlanetNames[0]}.in
-
-saConverge final CumulativeXUVFlux
-"""
     sFilePath = os.path.join(sOutputDirectory, "vconverge.in")
     with open(sFilePath, "w") as fileHandle:
-        fileHandle.write(sContent)
+        fileHandle.write("\n".join(listLines))
 
 
-def fnGenerateSystemFiles(dictSystem):
-    """Generate all input files for a planetary system.
+def ftComputeOverrideAge(dictSystem):
+    """Compute age distribution from literature override values."""
+    dMeanAgeGyr = dictSystem["dAgeOverrideGyr"]
+    dSigmaAgeGyr = dictSystem["dAgeOverrideSigmaGyr"]
+    daAgeGyr = np.random.normal(dMeanAgeGyr, dSigmaAgeGyr, 100000)
+    daAgeGyr = daAgeGyr[(daAgeGyr > 0.001) & (daAgeGyr <= 13.0)]
+    daAgeYears = daAgeGyr * 1e9
+    tAgeSummary = (
+        np.mean(daAgeGyr),
+        np.percentile(daAgeGyr, 2.5),
+        np.percentile(daAgeGyr, 97.5),
+    )
+    return daAgeYears, tAgeSummary
 
-    Parameters
-    ----------
-    dictSystem : dict
-        Dictionary with keys:
-            sSystemName : str
-            dStellarMass : float (Msun)
-            dStellarMassSigma : float
-            dRotationPeriod : float (days)
-            dRotationPeriodSigma : float
-            listPlanets : list of dict with keys:
-                sName, dMass, dMassSigma, dOrbPeriod, dOrbPeriodSigma
-    """
-    sSystemDir = os.path.join(
+
+def ftComputeSystemAge(dictSystem, sSpectralClass):
+    """Compute age distribution, returning (daAgeYears, tAgeSummary)."""
+    if "dAgeOverrideGyr" in dictSystem:
+        return ftComputeOverrideAge(dictSystem)
+    daRotationPeriod = (
+        dictSystem["dRotationPeriod"],
+        dictSystem["dRotationPeriodSigma"],
+    )
+    daLogAge = fdaComputeLogAgeDistribution(daRotationPeriod, sSpectralClass)
+    daAgeYears = fdaComputeAgeInYears(daLogAge)
+    tAgeSummary = ftComputeAgeSummary(daLogAge)
+    return daAgeYears, tAgeSummary
+
+
+def fsComputeSystemDirectory(sSystemName):
+    """Return the path to a system's directory under systems/."""
+    return os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
         "systems",
-        dictSystem["sSystemName"],
+        sSystemName,
     )
-    os.makedirs(sSystemDir, exist_ok=True)
 
-    sSpectralClass = fsSelectSpectralClass(dictSystem["dStellarMass"])
-    sXUVModel = fsSelectXUVModel(dictSystem["dStellarMass"])
 
-    if "dAgeOverrideGyr" in dictSystem:
-        dMeanAgeGyr = dictSystem["dAgeOverrideGyr"]
-        dSigmaAgeGyr = dictSystem["dAgeOverrideSigmaGyr"]
-        daAgeGyr = np.random.normal(dMeanAgeGyr, dSigmaAgeGyr, 100000)
-        daAgeGyr = daAgeGyr[(daAgeGyr > 0.001) & (daAgeGyr <= 13.0)]
-        daAgeYears = daAgeGyr * 1e9
-        tAgeSummary = (
-            np.mean(daAgeGyr),
-            np.percentile(daAgeGyr, 2.5),
-            np.percentile(daAgeGyr, 97.5),
-        )
-    else:
-        daRotationPeriod = (
-            dictSystem["dRotationPeriod"],
-            dictSystem["dRotationPeriodSigma"],
-        )
-        daLogAge = fdaComputeLogAgeDistribution(
-            daRotationPeriod, sSpectralClass
-        )
-        daAgeYears = fdaComputeAgeInYears(daLogAge)
-        tAgeSummary = ftComputeAgeSummary(daLogAge)
-
-    sAgePath = os.path.join(sSystemDir, "age_samples.txt")
-    np.savetxt(sAgePath, daAgeYears)
-
-    listPlanetNames = [d["sName"] for d in dictSystem["listPlanets"]]
-
-    fnWriteVplIn(sSystemDir, dictSystem["sSystemName"], listPlanetNames)
-    fnWriteStarIn(sSystemDir, dictSystem["dStellarMass"], sXUVModel)
-
-    for dictPlanet in dictSystem["listPlanets"]:
+def fnWriteAllPlanetFiles(sSystemDir, listPlanets):
+    """Write .in files for all planets in a system."""
+    for dictPlanet in listPlanets:
         dPlanetMass = dictPlanet.get("dMass", 1.0)
         if dPlanetMass is None:
             dPlanetMass = 1.0
         fnWritePlanetIn(
-            sSystemDir,
-            dictPlanet["sName"],
-            dPlanetMass,
-            dictPlanet["dOrbPeriod"],
+            sSystemDir, dictPlanet["sName"],
+            dPlanetMass, dictPlanet["dOrbPeriod"],
         )
 
+
+def fnGenerateSystemFiles(dictSystem):
+    """Generate all input files for a planetary system."""
+    sSystemDir = fsComputeSystemDirectory(dictSystem["sSystemName"])
+    os.makedirs(sSystemDir, exist_ok=True)
+
+    sSpectralClass = fsSelectSpectralClass(dictSystem["dStellarMass"])
+    sXUVModel = fsSelectXUVModel(dictSystem["dStellarMass"])
+    daAgeYears, tAgeSummary = ftComputeSystemAge(dictSystem, sSpectralClass)
+    np.savetxt(os.path.join(sSystemDir, "age_samples.txt"), daAgeYears)
+
+    listPlanetNames = [d["sName"] for d in dictSystem["listPlanets"]]
+    fnWriteVplIn(sSystemDir, dictSystem["sSystemName"], listPlanetNames)
+    fnWriteStarIn(sSystemDir, dictSystem["dStellarMass"], sXUVModel)
+    fnWriteAllPlanetFiles(sSystemDir, dictSystem["listPlanets"])
     fnWriteVspaceIn(
-        sSystemDir,
-        dictSystem["dStellarMass"],
-        dictSystem["dStellarMassSigma"],
-        dictSystem["listPlanets"],
-        sXUVModel,
+        sSystemDir, dictSystem["dStellarMass"],
+        dictSystem["dStellarMassSigma"], dictSystem["listPlanets"], sXUVModel,
     )
     fnWriteVconvergeIn(sSystemDir, listPlanetNames)
-
     return sSystemDir, tAgeSummary, sSpectralClass, sXUVModel

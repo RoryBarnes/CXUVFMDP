@@ -21,7 +21,7 @@ dOrbPeriod [-7.4507, 0.0005, g, max0] d_orbper
 
 file star.in
 
-dMass [0.273, 0.03, g, min0.101] mass
+dMass [0.273, 0.03, g, min0.10, max0.399] mass
 dAge [5e6, 1e6, g, min1000000] start
 dXUVEngleMidLateA [-0.1456, 0.0911, g] engle_a
 dXUVEngleMidLateB [-2.8876, 0.0439, g] engle_b

@@ -1,0 +1,23 @@
+# Host star parameters
+sName		star
+saModules	stellar	flare
+
+dMass		0.36
+dRotPeriod	-1.0
+dAge		1.0e6
+
+sStellarModel	baraffe
+sXUVModel	Engle24MidLate
+bHaltEndBaraffeGrid	0
+
+sFlareFFD		single
+dFlareMinEnergy		-1.0e29
+dFlareMaxEnergy		-1.0e34
+dEnergyBin		20
+sFlareBandPass		sxr
+dFlareSingleStarA1	-0.301
+dFlareSingleStarA2	-0.533
+dFlareSingleStarB1	8.732
+dFlareSingleStarB2	16.780
+
+saOutputOrder	Time -Luminosity -LXUVStellar -LXUVFlare -LXUVTot
